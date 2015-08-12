@@ -11,6 +11,7 @@ class CommandHandler:
     Handler for pushing (master) and pulling (agent) commands to and from
     a redis queue
     """
+    
     def __init__(self, redis_connection):
         self.r = redis_connection
         
@@ -42,6 +43,7 @@ class CommandHandler:
         Pull host's command queue every second and execute command
         after extracting the UUID
         """
+        
         while True:
             time.sleep(1)
             try:
