@@ -24,7 +24,6 @@ def main():
                         dest="redis_db",
                         default=0,
                         help="redis database")
-
                         
     (options, args) = parser.parse_args()
     
