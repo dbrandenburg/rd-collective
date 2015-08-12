@@ -1,2 +1,2 @@
 # rd-collective
-A Redis based command agent/master command executor
+A Redis based agent/master command executor
