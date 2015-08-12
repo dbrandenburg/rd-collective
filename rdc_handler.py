@@ -5,6 +5,8 @@ import time
 import subprocess
 import shlex
 import uuid
+import logging
+import rdc_logger
 
 
 class CommandHandler:
@@ -60,7 +62,7 @@ class CommandHandler:
             try:
                 (tx_id, command) = str(self.r.rpop(
                     nodename).decode('ascii')).split(' ', 1)
-                print('Command: ', command, 'Tx_id: ', tx_id)
+                logging.debug('Pulled tx_id: ' + tx_id + ' command: ' + command)
                 try:
                     command_output = subprocess.check_output(
                         shlex.split(command),
@@ -69,15 +71,17 @@ class CommandHandler:
                 except subprocess.CalledProcessError as e:
                     command_output = e.output
                     exit_code = e.returncode
-
+                logging.info(
+                    "Executed tx_id: " + tx_id
+                    + " command: " + command
+                    + " exitcode: " + str(exit_code))
                 self.r.lpush(
                     tx_id, 'exit_code:' + str(exit_code) + '\n'
                     + 'node_name: ' + nodename + '\n'
                     + 'output: \n' + command_output.decode("utf-8")
                 )
                 self.r.expire(tx_id, command_expire)
-                print(tx_id, command_output.decode("utf-8"))
             except AttributeError:
                 pass
             finally:
-                r.delete(nodename)
+                self.r.delete(nodename)

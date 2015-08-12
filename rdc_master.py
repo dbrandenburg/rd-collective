@@ -3,10 +3,12 @@
 import optparse
 import redis
 import rdc_handler
+import logging
+import rdc_logger
 
 
 def main():
-
+    
     usage = "usage: rdc_master.py [options] hostname \"command\""
     parser = optparse.OptionParser(usage=usage)
 
@@ -28,10 +30,12 @@ def main():
     (options, args) = parser.parse_args()
 
     if len(args) < 2:
+        logging.error("Too few arguments given. Exiting.")
         print("Too few arguments given.")
         parser.print_help()
         exit(1)
     elif len(args) > 2:
+        logging.error("Too few arguments given. Exiting")
         print("Too many arguments given.")
         parser.print_help()
         exit(1)
@@ -46,6 +50,7 @@ def main():
     try:
         conductor.push_command(hostnames, command)
     except KeyboardInterrupt:
+        logging.info("Cought Keyboard Interrupt.Exiting.")
         print("Exiting")
 
 if __name__ == "__main__":
