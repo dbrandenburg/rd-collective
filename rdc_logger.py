@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import logging
 LOGFILE = "rdcollective.log"
 DEFAULT_LOG_LEVEL = "debug"
