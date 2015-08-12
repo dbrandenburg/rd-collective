@@ -24,7 +24,6 @@ def main():
                         default=0,
                         help="redis database")
 
-                        
     (options, args) = parser.parse_args()
     
     if len(args) < 1:
