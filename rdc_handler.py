@@ -77,5 +77,7 @@ class CommandHandler:
                 )
                 self.r.expire(tx_id, command_expire)
                 print(tx_id, command_output.decode("utf-8"))
-            except:
+            except AttributeError:
                 pass
+            finally:
+                r.delete(nodename)

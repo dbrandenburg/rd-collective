@@ -40,9 +40,12 @@ def main():
         host=options.redis_host,
         port=options.redis_port,
         db=options.redis_db)
-    bandsman = rdc_handler.CommandHandler(redis_connection)
+    agent = rdc_handler.CommandHandler(redis_connection)
     hostname = args[0]
-    bandsman.pull_commands(hostname)
+    try:
+        agent.pull_commands(hostname)
+    except KeyboardInterrupt:
+        print("Exiting")
 
 if __name__ == "__main__":
     main()

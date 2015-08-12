@@ -43,7 +43,10 @@ def main():
     conductor = rdc_handler.CommandHandler(redis_connection)
     (hostnames, command) = args
     hostnames = tuple(hostnames.split(','))
-    conductor.push_command(hostnames, command)
+    try:
+        conductor.push_command(hostnames, command)
+    except KeyboardInterrupt:
+        print("Exiting")
 
 if __name__ == "__main__":
     main()
