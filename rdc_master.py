@@ -44,11 +44,12 @@ def main():
         host=options.redis_host,
         port=options.redis_port,
         db=options.redis_db)
-    conductor = rdc_handler.CommandHandler(redis_connection)
+    master = rdc_handler.CommandHandler(redis_connection)
     (hostnames, command) = args
     hostnames = tuple(hostnames.split(','))
     try:
-        conductor.push_command(hostnames, command)
+        results = master.push_command(hostnames, command)
+        print(results)
     except KeyboardInterrupt:
         logging.info("Cought Keyboard Interrupt.Exiting.")
         print("Exiting")

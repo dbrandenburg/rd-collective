@@ -26,30 +26,35 @@ class CommandHandler:
 
         tx_id = str(uuid.uuid4())
         print("tx_id:", tx_id)
-        number_of_nodes = len(nodes)
-        expected_results = 0
+        
         for nodename in nodes:
             self.r.lpush(nodename, str(tx_id + ' ' + command))
             self.r.expire(nodename, command_expire)
+
+        number_of_nodes = len(nodes)
+        nodes_returnig = 0
         expire_counter = 0
-        while expected_results < number_of_nodes and expire_counter < command_expire:
+        while nodes_returnig < number_of_nodes and expire_counter < command_expire:
             time.sleep(0.1)
             expire_counter += 0.1
             try:
                 result = self.r.rpop(tx_id)
                 if result:
-                    expected_results += 1
+                    nodes_returnig += 1
                     print(result.decode("utf-8"))
             except:
                 pass
+
         print(
-            expected_results,
+            nodes_returnig,
             'of',
             number_of_nodes,
             'nodes returned before timeout')
+
         return {
             'tx_id': tx_id,
-            'expected': expected_results}
+            'nodes_returning': nodes_returnig,
+            'number_of_nodes': number_of_nodes}
 
     def pull_commands(self, nodename, command_expire=320):
         """
