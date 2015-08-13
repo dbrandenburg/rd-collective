@@ -35,15 +35,14 @@ class CommandHandler:
         nodes_returnig = 0
         expire_counter = 0
         while nodes_returnig < number_of_nodes and expire_counter < command_expire:
-            time.sleep(0.1)
-            expire_counter += 0.1
             try:
                 result = self.r.rpop(tx_id)
                 if result:
                     nodes_returnig += 1
                     print(result.decode("utf-8"))
             except:
-                pass
+                expire_counter += 0.1
+                time.sleep(0.1)
 
         print(
             nodes_returnig,
